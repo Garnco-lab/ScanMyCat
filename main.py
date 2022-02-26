@@ -15,7 +15,7 @@ from tensorflow.keras.applications.resnet_v2 import ResNet50V2, preprocess_input
 cat_breeds = 0
 
 # get panda to read the label
-df_labels = pd.read_csv("labels.csv")
+df_labels = pd.read_csv("labelsCats.csv")
 
 # debug print labels
 print("Total number of unique Cat Breeds:", len(df_labels.breed.unique()))
