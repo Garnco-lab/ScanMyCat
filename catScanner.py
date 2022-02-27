@@ -30,3 +30,5 @@ class CatScanner:
         # display the predicted cat breed
         pred_breed = sorted(self.breed_dictionary)[np.argmax(pred_val)]
         print("Predicted Breed for this Cat is :", pred_breed)
+
+        return str(pred_breed)

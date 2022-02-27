@@ -7,6 +7,8 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.camera import Camera
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.floatlayout import FloatLayout
 
 
 class SayHello(App):
@@ -16,23 +18,33 @@ class SayHello(App):
         self.camera_obj = Camera()
         self.camera_obj.resolution = (800, 800)
 
+        self.cat_breed_name = "Nothing"
+
         button_obj = Button(text="Click Here")
         button_obj.size_hint = (0.5, 0.2)
         button_obj.pos_hint = {"x": 0.25, "y": 0.25}
         button_obj.bind(on_press=self.take_selfie)
 
-        layout = BoxLayout()
+        self.greeting = Label(
+            text=self.cat_breed_name,
+            font_size=18,
+            color='#00FFCE'
+        )
+
+        layout = FloatLayout()
         layout.add_widget(self.camera_obj)
         layout.add_widget(button_obj)
+        layout.add_widget(self.greeting)
+
         return layout
 
     def take_selfie(self, *args):
-        print("I AM TAKING A SELFIE")
         self.camera_obj.export_to_png("images/selfie.jpg")
         catScan = catScanner.CatScanner(
             "model", "images/selfie.jpg", 224, self.breed_dictionary
         )
-        catScan.scan_cat()
+        self.cat_breed_name = catScan.scan_cat()
+        self.greeting.text = self.cat_breed_name
 
 
 if __name__ == "__main__":
@@ -53,7 +65,3 @@ train_folder = "train/"
 
 # print each unique cat type reading the breeds
 # print("Total number of unique Cat Breeds:", len(df_labels.breed.unique()))
-
-
-
-
