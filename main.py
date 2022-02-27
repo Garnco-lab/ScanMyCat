@@ -10,17 +10,31 @@ from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout, BatchNormalization
 from tensorflow.keras.applications.resnet_v2 import ResNet50V2, preprocess_input
 import camera
-from kivy.uix.gridlayout import GridLayout
+
 import catScanner
 import kivy
 from kivy.app import App
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.widget import Widget
+from kivy.uix.image import Image
+from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
 
 cam = camera.Camera()
 
-cam.update_camera()
+# cam.update_camera()
     # cv2.waitKey(1)
+
+
+class SayHello(App):
+    def build(self):
+        self.window = GridLayout()
+        self.window.cols = 1
+
+        return self.window
+
+if __name__ == "__main__":
+    SayHello().run()
 
 # initializer variables
 image_size = 224
@@ -108,6 +122,6 @@ print("Total number of unique Cat Breeds:", len(df_labels.breed.unique()))
 # model.save("model")
 
 ## model training and creation ends ##
-catScan = catScanner.CatScanner("model", 'frolicfunny.jpg', image_size, breed_dictionary)
+catScan = catScanner.CatScanner("model", 'images/c1.jpg', image_size, breed_dictionary)
 
 catScan.scan_cat()
