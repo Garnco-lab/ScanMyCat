@@ -6,9 +6,9 @@ import catScanner
 from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.camera import Camera
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.image import Image
 
 
 class SayHello(App):
@@ -20,21 +20,22 @@ class SayHello(App):
 
         self.cat_breed_name = "Nothing"
 
+        self.image = Image(source="ui_pictures/catfunnyimage2.png")
+
         button_obj = Button(text="Click Here")
         button_obj.size_hint = (0.5, 0.2)
         button_obj.pos_hint = {"x": 0.25, "y": 0.25}
         button_obj.bind(on_press=self.take_selfie)
 
-        self.greeting = Label(
-            text=self.cat_breed_name,
-            font_size=18,
-            color='#00FFCE'
-        )
+        self.exit_button = Button(text="Exit")
+
+        self.greeting = Label(text=self.cat_breed_name, font_size=18, color="#00FFCE")
 
         layout = FloatLayout()
         layout.add_widget(self.camera_obj)
         layout.add_widget(button_obj)
         layout.add_widget(self.greeting)
+        layout.add_widget(self.image)
 
         return layout
 
@@ -56,12 +57,3 @@ encoder = LabelEncoder()
 
 # training images directory
 train_folder = "train/"
-
-# get panda to read the label
-
-
-# create a list dictionary of each breed label
-
-
-# print each unique cat type reading the breeds
-# print("Total number of unique Cat Breeds:", len(df_labels.breed.unique()))
