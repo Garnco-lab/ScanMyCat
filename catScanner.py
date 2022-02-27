@@ -12,11 +12,17 @@ class CatScanner:
         self.breed_dictionary = breed_dictionary
 
     def scan_cat(self):
-        prediction_image_list = cv2.resize(cv2.imread(self.prediction_image_path, cv2.IMREAD_COLOR),
-                                           ((self.image_size, self.image_size)))
+        prediction_image_list = cv2.resize(
+            cv2.imread(self.prediction_image_path, cv2.IMREAD_COLOR),
+            ((self.image_size, self.image_size)),
+        )
 
         prediction_image_list = preprocess_input(
-            np.expand_dims(np.array(prediction_image_list[..., ::-1].astype(np.float32)).copy(), axis=0))
+            np.expand_dims(
+                np.array(prediction_image_list[..., ::-1].astype(np.float32)).copy(),
+                axis=0,
+            )
+        )
 
         # feed the model with the image array for prediction
         pred_val = self.model.predict(np.array(prediction_image_list, dtype="float32"))
