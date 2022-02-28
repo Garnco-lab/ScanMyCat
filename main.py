@@ -14,6 +14,7 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
+
 class ImageButton(ButtonBehavior, Image):
     pass
 
@@ -25,46 +26,57 @@ class SayHello(App):
         self.camera_obj = Camera()
         self.camera_obj.resolution = (800, 800)
         self.countdown = 0
+        self.cat_change_complete = False
 
         self.cat_breed_name = "Nothing"
 
-        self.image = Image(source="ui_pictures/catfunnyimage.png", width=500, allow_stretch=True)
+        self.image = Image(
+            source="ui_pictures/catfunnyimage.png", width=500, allow_stretch=True
+        )
 
-        button_obj = ImageButton(source="ui_pictures/scancatbutton.png")
-        button_obj.size_hint = (0.5, 0.2)
-        button_obj.pos_hint = {"x": 0.25, "y": 0.05}
-        button_obj.bind(on_press=self.take_selfie)
+        self.button_obj = ImageButton(source="ui_pictures/emptybox.png")
+        self.button_obj.size_hint = (0.5, 0.2)
+        self.button_obj.pos_hint = {"x": 0.25, "y": 0.05}
+        self.button_obj.bind(on_press=self.take_selfie)
 
         self.exit_button = Button(text="Exit")
 
-        self.greeting = Label(text=self.cat_breed_name, font_size=18, color="#00FFCE")
+        self.greeting = Label(text="", font_size=30, color="#00FFCE")
 
-        layout = FloatLayout()
-        layout.add_widget(self.camera_obj)
-        layout.add_widget(self.greeting)
-        layout.add_widget(self.image)
-        layout.add_widget(button_obj)
-        Clock.schedule_interval(self.catChange, 1.)
-        # self.catImage = Image(source="images/selfie.jpg", opacity=0)
-        # layout.add_widget(self.catImage)
-        # self.anim = Animation(opacity=0.5, x=0.5)
-        # self.anim.start(self.catImage)
+        self.layout = FloatLayout()
+        self.layout.add_widget(self.camera_obj)
 
-        return layout
+        self.layout.add_widget(self.image)
+
+        Clock.schedule_interval(self.catChange, 1.0)
+        self.layout.add_widget(self.button_obj)
+        self.layout.add_widget(self.greeting)
+        return self.layout
 
     def take_selfie(self, *args):
+
         self.camera_obj.export_to_png("images/selfie.jpg")
         catScan = catScanner.CatScanner(
             "model", "images/selfie.jpg", 224, self.breed_dictionary
         )
         self.cat_breed_name = catScan.scan_cat()
-        self.greeting.text = self.cat_breed_name
+        self.greeting.text = "I think it's a " + str(self.cat_breed_name)
+        self.image.source = "ui_pictures/catfunnyimage3.png"
 
     def catChange(self, *args):
-        self.countdown += 1
-        print(self.countdown)
-        if self.countdown > 7:
-            self.image.source = "ui_pictures/catfunnyimage2.png"
+        if not self.cat_change_complete:
+            self.countdown += 1
+            print(self.countdown)
+            if self.countdown > 7:
+                self.image.source = "ui_pictures/catfunnyimage2.png"
+                self.button_obj.source = "ui_pictures/scancatbutton.png"
+                self.cat_change_complete = True
+
+    def restart(self):
+        self.root.clear_widgets()
+        self.stop()
+        return SayHello().run()
+
 
 if __name__ == "__main__":
     SayHello().run()
