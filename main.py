@@ -1,5 +1,6 @@
 # import
 import pandas as pd
+import os
 import cv2
 from sklearn.preprocessing import LabelEncoder
 import catScanner
@@ -62,6 +63,8 @@ class SayHello(App):
         self.cat_breed_name = catScan.scan_cat()
         self.greeting.text = "I think it's a " + str(self.cat_breed_name)
         self.image.source = "ui_pictures/catfunnyimage3.png"
+        self.button_obj.source = "ui_pictures/retrybutton.png"
+        self.button_obj.bind(on_press=self.restart)
 
     def catChange(self, *args):
         if not self.cat_change_complete:
@@ -72,10 +75,13 @@ class SayHello(App):
                 self.button_obj.source = "ui_pictures/scancatbutton.png"
                 self.cat_change_complete = True
 
-    def restart(self):
-        self.root.clear_widgets()
-        self.stop()
-        return SayHello().run()
+    def restart(self, *args):
+        self.image.source = "ui_pictures/catfunnyimage.png"
+        self.button_obj.source = "ui_pictures/emptybox.png"
+        self.countdown = 0
+        self.cat_change_complete = False
+        self.button_obj.bind(on_press=self.take_selfie)
+        self.greeting.text = ''
 
 
 if __name__ == "__main__":
