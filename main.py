@@ -20,7 +20,7 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 
-class SayHello(App):
+class ScanMyCat(App):
     def build(self):
         df_labels = pd.read_csv("labelsCats.csv")
         self.breed_dictionary = list(df_labels["breed"].value_counts().keys())
@@ -80,12 +80,12 @@ class SayHello(App):
         self.button_obj.source = "ui_pictures/emptybox.png"
         self.countdown = 0
         self.cat_change_complete = False
-        self.button_obj.bind(on_press=self.take_selfie)
-        self.greeting.text = ''
+        # self.button_obj.bind(on_press=self.take_selfie)
+        self.greeting.text = ""
 
 
 if __name__ == "__main__":
-    SayHello().run()
+    ScanMyCat().run()
 # initializer variables
 image_size = 224
 
